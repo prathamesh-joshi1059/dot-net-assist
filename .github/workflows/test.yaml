@@ -1,0 +1,63 @@
+name: Review PR
+on: 
+    pull_request:
+      branches:
+        - main
+        - master 
+    workflow_dispatch:
+
+jobs:
+  Workflow-Test:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+        
+        - name: Checkout to CodeAssist
+          uses: actions/checkout@v4
+          with:
+            repository: appstute/CodeAssist
+            token: ${{ secrets.REPO_PAT_TOKEN }}
+            ref: prathamesh_creds
+            path: ./second_repo/CodeAssist
+            fetch-depth: 0
+
+        - name: Update Permission
+          run: chmod -R +x ${{ github.workspace }}/second_repo/CodeAssist
+
+        - name: Move CodeAssist
+          run: mv ${{ github.workspace }}/second_repo/CodeAssist /home/runner/work/CodeAssist
+        
+        - name: Read PR labels
+          id: read-label
+          uses: actions/github-script@v7
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number
+              });
+
+              const check_all_files = labels.some(label => label.name === 'check_all_files')
+              console.log("Check all files:", check_all_files)
+              core.setOutput('check_all_files', check_all_files ? 'true' : 'false')
+        
+        - name: Log check_all_files value
+          run: echo "check_all_files value is ${{ steps.read-label.outputs.check_all_files }}"
+        
+        - name: Run Review Shell File
+          run: /home/runner/work/CodeAssist/review.sh assistant /home/runner/work/CodeAssist ${{ steps.read-label.outputs.check_all_files }}
+          shell: bash
+          env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            
+        
+        - name: Open Pull Request
+          run: gh pr create --title "AI Suggestions for ${{ github.event.pull_request.title }}" --body "Please Review the changes AI has suggested" -R ${{ github.repository }} -B ${{ github.event.pull_request.head.ref }} -H assistant
+          env:
+            GH_TOKEN: ${{ secrets.REPO_PAT_TOKEN }}
