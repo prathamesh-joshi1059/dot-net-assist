@@ -255,7 +255,7 @@ namespace CMSAdmin.Controllers
                 return View();
             }
 
-            // Generate the token and send it
+            // Generate the token and send it ..
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 ViewBag.ErrorCode = "0x0002";
