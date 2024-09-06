@@ -1,0 +1,2 @@
+Clean up any redundant or unused code
+Apply Prettier rules for consistent formatting

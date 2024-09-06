@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Finolex Cables. | @ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.MetaDescription">
+    <meta name="keywords" content="@ViewBag.MetaKeywords">
+    <meta name="apiToken" content="@ViewBag.ApiToken" />
+
+    <style>
+        /* Add some basic styles for the loader */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            margin-top: 5%;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Optional: You can hide the loader initially */
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/CMS/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/CMS/Content/timeline.css">
+    <link rel="stylesheet" href="~/CMS/Content/animations.css">
+    <link rel="stylesheet" href="~/CMS/Content/fonts.css">
+    <link rel="stylesheet" href="~/CMS/Content/main.css" class="color-switcher-link">
+    <link rel="stylesheet" href="~/CMS/Content/shop.css">
+    @*<link rel="stylesheet" href="~/CMS/Content/font-awesome.min.css">*@
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" media="all" href="~/CMS/fancybox/source/jquery.fancybox.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="~/CMS/magnific-popup/css/magnific-popup.css" />
+    <!-- Product zoom gallery styles-->
+    <link rel="stylesheet" type="text/css" href="~/CMS/Content/xzoom.css" media="all" />
+
+    @{
+        string apiToken = ViewBag.ApiToken as string; // Retrieve the apiToken from ViewBag
+    }
+    @{
+        string AssetPath = (string)System.Web.HttpContext.Current.Application["AssetPath"];
+    }
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+</head>
+
+<body>
+
+    @*<div class="preloader">
+            <div class="preloader_image"></div>
+        </div>*@
+
+    <div id="loader" class="loader hidden"></div>
+
+    <div id="canvas">
+        <div id="box_wrapper">
+
+            <section class="page_topline ls section_padding_15">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            @{
+                                Html.RenderAction("RenderTopMenu", "Common");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--Header-Upper-->
+            <header class="page_header header_white toggler_xs_right section_padding_25">
+                <div class="container-fluid manu-header">
+
+
+
+                    <div class="row">
+                        <div class="col-sm-12 display_table">
+                            <div class="header_left_logo display_table_cell">
+                                <a href="/View/Page/Home" class="logo top_logo">
+                                    <img src="@AssetPath/images/Finolex_logo_header.svg" alt="">
+                                </a>
+                            </div>
+
+                            @using (Html.BeginForm("SiteSearch", "Home", FormMethod.Post))
+                            {
+                                <div class="serchbarmobile">
+
+
+
+                                    <img id="toggle-search" src="~/images/Serch_icon.svg" style="padding-top: 22px; padding-right: 23px">
+                                    @*<i id="toggle-search" class="icon fa fa-search" style="padding-top: 22px"></i>*@
+
+                                    <input style="display: none;" class="form-control" autocomplete="off" id="searchBar" name="SearchString" type="search" placeholder="Search…">
+                                </div>
+                            }
+
+                            @{
+                                Html.RenderAction("RenderPrimaryMenu", "Common");
+                            }
+
+                            @using (Html.BeginForm("SiteSearch", "Home", FormMethod.Post))
+                            {
+                                <div class="header_right_buttons display_table_cell text-right hidden-xs">
+                                    <div class="widget widget_search inline-block">
+                                        <div class="" style="padding-top: 52px">
+                                            <img id="toggle-search1" src="~/images/Serch_icon.svg" style="margin-top: -27px" alt="Search Product">
+                                            @*   <i id="toggle-search1" class="icon fa fa-search" style="padding-top: 26px; font-size: 27px;"></i>*@
+
+                                            <input style="display: none;" autocomplete="off" class="form-control" id="searchBar1" name="SearchString" type="search" placeholder="Search…">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!--End Header Upper-->
+            <section>
+
+                <div>
+
+                    @RenderBody()
+                </div>
+            </section>
+
+            <!-- Main Footer -->
+            <footer class="page_footer bgfooter section_padding_top_100 section_padding_bottom_65 table_section">
+                <div class="container" style="padding-top: 0px">
+
+
+                    <div class="row mt-4" style="margin-top: 48px">
+
+                        <div class="col-md-3 col-sm-6 text-center text-sm-left">
+                            <div class="widget widget_text">
+                                <a href="/View/Page/Home" class="logo vertical_logo">
+                                    <img src="@AssetPath/images/finolex-logo-footer.png" alt="">
+                                </a>
+                            </div>
+
+                            <a class="social-icon color-icon soc-facebook" href="https://www.facebook.com/FinolexCables/" target="_blank" title="Facebook"></a>
+
+                            <a class="social-icon color-icon soc-instagram" href="https://www.instagram.com/Finolex.Cables/" target="_blank" title="Instagram"></a>
+
+                            <a class="social-icon color-icon soc-linkedin" href="https://www.linkedin.com/company/finolex-cables-ltd" target="_blank" title="LinkedIn"></a>
+
+                            <a class="social-icon color-icon soc-twitter" href="https://twitter.com/FinolexCables" target="_blank" title="Twitter"></a>
+
+                            <a class="social-icon color-icon soc-youtube" href="https://www.youtube.com/channel/UCLUlEittWoPYIXf9TAycs_A" target="_blank" title="Youtube"></a>
+
+                        </div>
+
+                        <!-- Footer Column -->
+                        @{
+                            Html.RenderAction("RenderFooterMenu", "Common");
+                        }
+                        <!-- Footer Column -->
+
+                        <div class="col-md-3 col-sm-6 text-center text-sm-left">
+                            <div class="widget widget_text">
+                                <h4 class="widget-title highlight">Corporate Office</h4>
+                                <table class="highlightlinks">
+                                    <tbody>
+                                        <tr>
+                                            <td>Address: </td>
+                                            <td>
+                                                26-27, Mumbai-Pune Road, Pimpri,
+                                                Pune - 411 018.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone : </td>
+                                            <td> +91-20-27475963</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email : </td>
+                                            <td><a href="mailto:sales@finolex.com "> sales@finolex.com </a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center  footer_copywrite">
+                            <p class="small-text big  copyright ">&copy; Copyright 2023. Finolex Cabels. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!--End pagewrapper-->
+    <!--Scroll to top-->
+    <!--<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>-->
+    <!-- CHAT BAR BLOCK -->
+    <div class="content ">
+        <div class="chat-bar-collapsible ">
+            <button id="chat-button chattop" type="button" class="collapsible" style="width: 191px; margin-left: 180px;">
+                <img src="~/CMS/fonts/Chat.svg" style="margin-right: 10px;" alt="Finolex Chatbot" />
+                Lets Chat!
+            </button>
+            <div class="content" id="chat_content">
+                <div class="full-chat-block" style="background-size: cover; background-repeat: no-repeat; background-position: center;">
+
+                    <!-- Message Container -->
+                    <div class="outer-container">
+                        <div class="chat-container">
+                            <!-- Messages -->
+                            <div id="chatbox">
+                                @*<h5 id="chat-timestamp"></h5>*@
+                                <p id="botStarterMessage"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="round_button" class="collapsible" style="display: none;">
+                <span style="font-weight: bolder; font-size: 26px; text-align: center;">X</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CHAT BAR BLOCK ends -->
+
+    <script src="~/CMS/scripts/vendor/jquery-3.1.0.min.js" async></script>
+    <script src="~/CMS/scripts/vendor/modernizr-2.6.2.min.js" async></script>
+    @*<script async src="https://www.youtube.com/s/player/da154528/player_ias.vflset/en_US/base.js" ></script>*@
+    <!-- hammer plugin here -->
+    <script type="text/javascript" src="~/CMS/hammer/1.0.5/jquery.hammer.min.js"></script>
+    <script type="text/javascript" src="~/CMS/fancybox/source/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="~/CMS/magnific-popup/js/magnific-popup.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CVXLHPCZD1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-CVXLHPCZD1');
+    </script>
+
+    <script src="~/CMS/scripts/chatbot.js" async></script>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script>
+
+        const webChatContainer = document.getElementById('botStarterMessage');
+        const directLineSecret = "bgIsOzMTQp4.KXHXpNidQYjEsQgpq0W_w44DqTppTy4hr1UMQiV6zb8";
+
+        window.WebChat.renderWebChat(
+            {
+                directLine: window.WebChat.createDirectLine({ token: directLineSecret }),
+                user: { id: 'user_id' },
+            },
+            webChatContainer
+        );
+    </script>
+    <script>
+        document.getElementById('chat-button chattop').addEventListener('click', function () {
+            document.getElementById('chat-button chattop').style.display = 'none';
+            document.getElementById('round_button').style.display = 'block';
+            document.getElementById('chat_content').style.display = 'inline';
+            this.classList.add('slide-in');
+            document.getElementById('round_button').classList.remove('slide-out');
+        });
+        document.getElementById('round_button').addEventListener('click', function () {
+            document.getElementById('round_button').style.display = 'none';
+            document.getElementById('chat-button chattop').style.display = 'block';
+            document.getElementById('chat_content').style.display = 'none';
+            this.classList.add('slide-out');
+            document.getElementById('chat-button chattop').classList.remove('slide-in');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="~/CMS/scripts/bootstrap.min.js"></script>
+    <script src="~/CMS/scripts/compressed.js"></script>
+    <script src="~/CMS/scripts/main.js"></script>
+
+    <script src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"></script>
+    <script src="~/CMS/Scripts/jquery-ui1.12.1.js"></script>
+    <!-- XZOOM JQUERY PLUGIN  -->
+    <script type="text/javascript" src="~/CMS/scripts/xzoom.min.js"></script>
+    <!-- <script type="text/javascript" src="js/foundation.min.js"></script> -->
+    <script type="text/javascript" src="~/CMS/scripts/setup.js"></script>
+    <!--data table script-->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/CMS/scripts/timeline.js"></script>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+    @*  serach icon script for mobile*@
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+    <script id="rendered-js">
+        // Search Bar & Toggle
+        $('#toggle-search').on('click', function () {
+            $('#searchBar').toggle('display: inline-block');
+        });
+
+
+        $('#toggle-search1').on('click', function () {
+            $('#searchBar1').toggle('display: inline-block');
+        });
+    </script>
+
+    <script>
+        // Show the loader when the page starts loading
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('loader').classList.remove('hidden');
+        });
+
+        // Hide the loader when the page has fully loaded
+        window.onload = function () {
+            document.getElementById('loader').style.display = 'none';
+        };
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
